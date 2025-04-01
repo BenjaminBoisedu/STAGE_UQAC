@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Judge';
+    src: url(/CSS/Font/JudgeFont/judge.ttf) format('truetype');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    font-size: 16px;
+    font-size-adjust: 0.5;
+    font-stretch: normal;
+    font-variant: normal;
+    font-variant-alternates: normal;
+}

@@ -1,0 +1,13 @@
+@media screen and (max-width: 768px) {
+    .header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        color: #333;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+}

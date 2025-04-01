@@ -1,0 +1,19 @@
+@media screen and (max-width: 768px) {
+    header.home__header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 10px 20px;
+    }
+
+    header.home__header h1 {
+        color: #303030;
+        text-align: center;
+        font-family: Judge, sans-serif;
+        font-size: 33px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+
+}
