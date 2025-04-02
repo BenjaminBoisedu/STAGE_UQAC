@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { getCollection } from "../../services/FirebaseOperations";
+import { Link } from "react-router-dom";
 
 export default function Articles() {
   const [articles, setArticles] = useState([]);
@@ -26,9 +27,6 @@ export default function Articles() {
   }, []);
 
   console.log("Articles:", articles);
-  console.log("Loading:", loading);
-  console.log("Error:", error);
-  console.log("Is Empty:", isEmpty);
 
   return (
     <div>
@@ -41,8 +39,19 @@ export default function Articles() {
         <div>
           {articles.map((article, index) => (
             <div key={index}>
-              <h2>{article.titre}</h2>
-              <p>{article.description}</p>
+              <div className="thumbnail">
+                <img src={article.image} alt={article.titre} />
+              </div>
+              <div className="content">
+                <h2>{article.titre}</h2>
+                <p>{article.description}</p>
+                <p>Auteur: {article.auteur}</p>
+                <p>
+                  Date: {new Date(article.datePublication).toLocaleDateString()}
+                </p>
+                <p>Tags: {article.tags.join(", ")}</p>
+                <Link to={`/articles/${article.id}`}>Lire la suite</Link>
+              </div>
             </div>
           ))}
         </div>
