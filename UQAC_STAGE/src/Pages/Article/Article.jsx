@@ -1,35 +1,83 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { getDocumentById } from "../../services/ArticlesServices/GetDocuments";
 import { getCollection } from "../../services/FirebaseOperations";
+import { useParams } from "react-router-dom";
 import "./Article.css";
 
 export default function Article() {
-  const [articles, setArticles] = useState([]);
+  const [article, setArticle] = useState(null);
+  const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEmpty, setIsEmpty] = useState(false);
 
+  const { id } = useParams();
+
   useEffect(() => {
-    const fetchArticles = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getCollection("Publications");
-        if (data.length === 0) {
+        // Récupérer l'article
+        const articleData = await getDocumentById("Publications", id);
+        if (!articleData) {
           setIsEmpty(true);
+          return;
         }
-        setArticles(data);
+
+        // Récupérer tous les tags
+        const allTags = await getCollection("tag");
+        console.log("Tous les tags disponibles:", allTags);
+
+        // Vérifier si l'article a des tags
+        if (articleData.tags && articleData.tags.length > 0) {
+          console.log("Tag Article:", articleData.tags[0].id);
+
+          // Comparer les tags de l'article avec tous les tags
+          const filteredTags = allTags.filter((tag) => {
+            return articleData.tags.some(
+              (articleTag) => articleTag.id === tag.id
+            );
+          });
+          console.log("Filtered Tags:", filteredTags);
+        }
+
+        // Mettre à jour l'état avec les données de l'article et les tags
+        setTags(allTags);
+        setArticle(articleData);
       } catch (err) {
-        console.error("Erreur lors de la récupération des articles:", err);
         setError(err.message);
+        console.error("Erreur lors de la récupération:", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchArticles();
-  }, []);
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
+    fetchData();
+  }, [id]);
+
+  if (loading) {
+    return <div className="loading">Chargement de l'article...</div>;
+  }
+
+  if (error) {
+    return <div className="error">Erreur: {error}</div>;
+  }
+
+  if (isEmpty) {
+    return <div className="empty">Aucun article trouvé.</div>;
+  }
+
+  if (!article) {
+    return <div className="empty">Aucun article trouvé.</div>;
+  }
+  console.log("Article:", article);
+  console.log("Tags:", tags);
+  const formatDate = (firestoreDate) => {
+    if (!firestoreDate) return "";
+
+    // Conversion du timestamp Firestore en Date
+    const date = firestoreDate.toDate();
+
+    // Formatage de la date en français
     return date.toLocaleDateString("fr-FR", {
       year: "numeric",
       month: "long",
@@ -39,34 +87,25 @@ export default function Article() {
 
   return (
     <div className="articles-container">
-      <h1>Articles</h1>
-
-      {loading && <p>Chargement des articles...</p>}
-
-      {error && (
-        <div className="error-message">
-          <p>Erreur lors du chargement des articles: {error}</p>
-        </div>
-      )}
-
-      {isEmpty && (
-        <div className="empty-message">
-          <p>Aucun article n'est disponible pour le moment.</p>
-        </div>
-      )}
-
-      {!loading && !error && articles.length > 0 && (
-        <div className="articles-grid">
-          {articles.map((article) => (
-            <article key={article.id} className="article-card">
-              <h2>{article.titre}</h2>
-              <p>{article.description}</p>
-              <div className="article-metadata">
-                <span>Publié le : {formatDate(article.datePublication)}</span>
-                <span>Auteur : {article.auteur || "Anonyme"}</span>
-              </div>
-            </article>
-          ))}
+      {article && (
+        <div className="article-content">
+          <h1>{article.titre}</h1>
+          <div className="thumbnail">
+            <img src={article.image} alt={article.titre} />
+          </div>
+          <div className="content">
+            <p>{article.description}</p>
+            <p>Auteur: {article.auteur}</p>
+            <p>Date: {formatDate(article.datePublication)}</p>
+            <div className="tags">
+              {article.tags &&
+                article.tags.map((tag, index) => (
+                  <li key={index}>
+                    {tags.find((t) => t.id === tag.id)?.nom || "Tag inconnu"}
+                  </li>
+                ))}
+            </div>
+          </div>
         </div>
       )}
     </div>
