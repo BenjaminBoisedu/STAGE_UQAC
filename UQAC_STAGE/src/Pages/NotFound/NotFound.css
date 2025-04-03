@@ -1,0 +1,39 @@
+@media screen and (max-width: 768px) {
+    .not-found-container {
+        margin: 1.5rem;
+        max-width: 1200px;
+        border-radius: 28px;
+        border: 1px solid #FFF;
+        background: linear-gradient(180deg, rgba(229, 220, 220, 0.87) 0%, rgba(241, 220, 190, 0.88) 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+
+    .not-found-container img {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin: 1rem 0;
+    }
+
+    .not-found-container h1 {
+        font-size: 1.5rem;
+        color: #811b1b;
+        text-align: center;
+        margin: 1rem 0;
+    }
+
+    .cta a {
+        text-decoration: none;
+        color: #811b1b;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+        border-radius: 17px;
+        background: var(--Background, linear-gradient(180deg, rgba(229, 220, 220, 0.85) 0%, rgba(241, 220, 190, 0.86) 100%));
+        box-shadow: 0px 4px 11px 1px rgba(0, 0, 0, 0.25);
+    }
+
+}
