@@ -1,6 +1,6 @@
 @media screen and (max-width: 768px) {
     .articles-container {
-        padding: 1.5rem;
+        padding: 1rem;
         max-width: 1200px;
         margin: 0 auto;
     }
@@ -20,9 +20,8 @@
     .article-content {
         background: white;
         border-radius: 8px;
-        padding: 1rem 1rem;
+        padding: 0rem 1rem;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin: 1rem 0;
         overflow: hidden;
         transition: all 0.3s ease;
         cursor: pointer;

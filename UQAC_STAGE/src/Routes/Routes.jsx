@@ -30,6 +30,14 @@ const Logout = lazy(() =>
   delay(1000).then(() => import("../Pages/Logout/Logout"))
 );
 
+const Categories = lazy(() =>
+  delay(1000).then(() => import("../Pages/Catégories/Catégories"))
+);
+
+const Category = lazy(() =>
+  delay(1000).then(() => import("../Pages/Catégorie/Catégorie"))
+);
+
 const AppRoutes = () => {
   return (
     <BrowserRouter>
@@ -41,6 +49,9 @@ const AppRoutes = () => {
           <Route path="/register" element={<Signup />} />
           <Route path="/articles" element={<Articles />} />
           <Route path="/articles/:id" element={<Article />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/categories/:id" element={<Category />} />
+
           {/* Route publique */}
 
           {/* Route protégée */}
