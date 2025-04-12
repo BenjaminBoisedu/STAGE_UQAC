@@ -1,0 +1,64 @@
+@media screen and (max-width: 768px) {
+    .logout-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(180deg, rgba(229, 220, 220, 0.87) 0%, rgba(241, 220, 190, 0.88) 100%);
+        border-radius: 28px;
+        border: 1px solid #FFF;
+        padding: 20px;
+        margin: 1rem;
+    }
+
+    .logout-title {
+        color: #000;
+        text-align: center;
+        font-family: Inter;
+        font-size: 1.5rem;
+        font-style: italic;
+        font-weight: 500;
+        line-height: normal;
+    }
+
+    .logout-text {
+        color: #000;
+        text-align: center;
+        font-family: Inter;
+        font-size: 1rem;
+        font-style: italic;
+        font-weight: 300;
+        line-height: normal;
+    }
+
+    .cta {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+        margin-top: 1rem;
+    }
+
+    .cta button.cancel-button {
+        background: var(--Background, linear-gradient(180deg, rgba(229, 220, 220, 0.85) 0%, rgba(241, 220, 190, 0.86) 100%));
+        color: #000;
+        font-family: Inter;
+        font-size: 1rem;
+        font-style: italic;
+        font-weight: 300;
+        line-height: normal;
+        cursor: pointer;
+    }
+
+    .cta button.logout-button {
+        background: linear-gradient(180deg, #F00 0%, #BD6D37 100%);
+        color: #000;
+        font-family: Inter;
+        font-size: 1rem;
+        font-style: italic;
+        font-weight: 300;
+        line-height: normal;
+        cursor: pointer;
+    }
+
+}

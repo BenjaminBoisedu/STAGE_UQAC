@@ -23,19 +23,17 @@ export default function Logout() {
   return (
     <div className="logout-container">
       <div className="logout-content">
-        <h2>Vous souhaitez vous deconnecter ?</h2>
-        <p>
-          Une inactivité de plus de 30 jours, se suivra d’une désactivation de{" "}
-          <br />
-          compte, pour changer ce délai, dirigez vous vers paramètres - comptes{" "}
-          <br />
-          -inactivité.
+        <h2 className="logout-title">Vous souhaitez vous deconnecter ?</h2>
+        <p className="logout-text">
+          Une inactivité de plus de 30 jours, se suivra d’une désactivation de
+          compte, pour changer ce délai, dirigez vous vers paramètres - comptes
+          - inactivité.
         </p>
         <div className="cta">
           <button className="cancel-button" onClick={handleCancel}>
             <a href="/profile">Annuler</a>
           </button>
-          <button onClick={handleLogout}>
+          <button className="logout-button" onClick={handleLogout}>
             <a href="/">Se déconnecter</a>
           </button>
         </div>
