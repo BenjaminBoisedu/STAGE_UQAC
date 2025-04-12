@@ -1,58 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login_Form.css";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { GoogleAuthProvider } from "firebase/auth";
-import { signInWithPopup } from "firebase/auth";
-import { auth } from "../../../config/Firebase";
 import { FaGoogle } from "react-icons/fa";
+import { useAuth } from "../../../contexts/AuthContext";
 
 export default function Login_Form() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [localError, setLocalError] = useState("");
 
-  const provider = new GoogleAuthProvider();
+  const navigate = useNavigate();
+  const { login, loginWithGoogle, error: authError } = useAuth();
+
+  // Afficher l'erreur du contexte d'authentification ou l'erreur locale
+  const error = authError || localError;
 
   // Fonction pour gérer la connexion avec Google
   const handleGoogleLogin = async () => {
+    setLoading(true);
     try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      // Enregistrement du token dans le stockage local
-      localStorage.setItem("token", user.accessToken);
+      await loginWithGoogle();
       navigate("/"); // Redirection vers la page d'accueil après connexion
     } catch (error) {
+      // L'erreur est déjà gérée dans le contexte d'authentification
       console.error("Erreur de connexion Google:", error);
-      setError("Erreur de connexion avec Google");
-    }
-  };
-
-  // Fonction pour gérer la connexion avec un compte email et mot de passe
-  const handleEmailLogin = async () => {
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
-      // Enregistrement du token dans le stockage local
-      localStorage.setItem("token", user.accessToken);
-      navigate("/"); // Redirection vers la page d'accueil après connexion
-    } catch (error) {
-      console.error("Erreur de connexion:", error);
-      setError("Erreur de connexion");
+    } finally {
+      setLoading(false);
     }
   };
 
   // Fonction pour gérer la soumission du formulaire
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validation du formulaire
     const validations = [
       { condition: !email, message: "L'adresse e-mail est requise" },
       {
@@ -64,28 +46,38 @@ export default function Login_Form() {
 
     for (const validation of validations) {
       if (validation.condition) {
-        setError(validation.message);
+        setLocalError(validation.message);
         return;
       }
     }
-    if (error) {
-      setError("");
-    }
 
-    setError("");
+    setLocalError("");
     setLoading(true);
-    await handleEmailLogin();
+
+    try {
+      await login(email, password);
+      navigate("/"); // Redirection vers la page d'accueil après connexion
+    } catch (error) {
+      // L'erreur est déjà gérée dans le contexte d'authentification
+      console.error("Erreur de connexion:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
+
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
+
   const handleForgotPassword = () => {
-    // Handle forgot password logic here
+    // À implémenter: logique de mot de passe oublié
     console.log("Forgot password clicked");
   };
+
   return (
     <div className="login-form">
       {error && <p className="error-message">{error}</p>}
@@ -112,7 +104,6 @@ export default function Login_Form() {
             onChange={handlePasswordChange}
             required
             autoComplete="current-password"
-            autoFocus
             placeholder="Entrez votre mot de passe"
           />
         </div>
@@ -136,11 +127,12 @@ export default function Login_Form() {
             type="button"
             onClick={handleGoogleLogin}
             className="google-login"
+            disabled={loading}
           >
             <FaGoogle className="google-icon" />
           </button>
         </div>
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} className="login-button">
           {loading ? "Connexion en cours..." : "Se connecter"}
         </button>
         <div className="form-group">

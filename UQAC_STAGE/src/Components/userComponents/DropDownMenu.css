@@ -1,0 +1,82 @@
+@media screen and (max-width: 768px) {
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropbtn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .dropbtn:hover {
+        background-color: #45a049;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        min-width: 180px;
+        background-color: #fff;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        display: none;
+        overflow: hidden;
+    }
+
+    .dropdown-menu a {
+        padding: 12px 16px;
+        color: #333;
+        text-decoration: none;
+        display: block;
+        transition: background-color 0.2s;
+    }
+
+    .dropdown-menu a:hover {
+        background-color: #f1f1f1;
+    }
+
+    .show {
+        display: block;
+    }
+
+    /* Styles pour la séparation entre les éléments */
+    .dropdown-menu a:not(:last-child) {
+        border-bottom: 1px solid #eee;
+    }
+
+    /* Animation d'apparition */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .show {
+        display: block;
+        animation: fadeIn 0.2s ease-out;
+    }
+
+    /* Styles responsifs pour les petits écrans */
+    @media screen and (max-width: 768px) {
+        .dropdown-menu {
+            width: 100%;
+            left: 0;
+        }
+    }
+
+}

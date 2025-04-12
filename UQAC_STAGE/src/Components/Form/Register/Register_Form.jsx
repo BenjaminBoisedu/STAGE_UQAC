@@ -4,6 +4,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth"; // Uncomment if 
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../../config/Firebase"; // Uncomment if using Firebase
 import "./Register_Form.css";
+import { FaGoogle } from "react-icons/fa"; // Uncomment if using Google icon
 
 export default function Register_Form() {
   const [email, setEmail] = useState("");
@@ -176,18 +177,18 @@ export default function Register_Form() {
             </a>
           </p>
         </div>
-        <div className="form-group">
+        <div className="form-group-buttons">
           <button
             type="button"
             className="google-auth-button"
             onClick={() => {}}
           >
-            S'inscrire avec Google
+            <FaGoogle className="google-icon" />
+          </button>
+          <button type="submit" disabled={loading} className="submit-button">
+            {loading ? "Inscription en cours..." : "S'inscrire"}
           </button>
         </div>
-        <button type="submit" disabled={loading} className="submit-button">
-          {loading ? "Inscription en cours..." : "S'inscrire"}
-        </button>
       </form>
     </div>
   );

@@ -40,44 +40,42 @@ const Category = lazy(() =>
 
 const AppRoutes = () => {
   return (
-    <BrowserRouter>
-      <Suspense fallback={<LoadingSpinner />}>
-        <Routes>
-          {/* Route publique */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Signup />} />
-          <Route path="/articles" element={<Articles />} />
-          <Route path="/articles/:id" element={<Article />} />
-          <Route path="/categories" element={<Categories />} />
-          <Route path="/categories/:id" element={<Category />} />
+    <Suspense fallback={<LoadingSpinner />}>
+      <Routes>
+        {/* Route publique */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Signup />} />
+        <Route path="/articles" element={<Articles />} />
+        <Route path="/articles/:id" element={<Article />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/categories/:id" element={<Category />} />
 
-          {/* Route publique */}
+        {/* Route publique */}
 
-          {/* Route protégée */}
-          <Route
-            path="/profile"
-            element={
-              <PrivateRoute>
-                <Profile />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/logout"
-            element={
-              <PrivateRoute>
-                <Logout />
-              </PrivateRoute>
-            }
-          />
-          {/* Route protégée */}
+        {/* Route protégée */}
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/logout"
+          element={
+            <PrivateRoute>
+              <Logout />
+            </PrivateRoute>
+          }
+        />
+        {/* Route protégée */}
 
-          {/* Route 404 */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+        {/* Route 404 */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 };
 

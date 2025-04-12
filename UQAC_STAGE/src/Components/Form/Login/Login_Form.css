@@ -28,6 +28,7 @@
     .login-form .form-group {
         width: 100%;
         margin-bottom: 15px;
+        margin-top: 15px;
     }
 
     .login-form .form-group label {
@@ -82,6 +83,17 @@
         text-align: center;
     }
 
+    .login-form button.login-button {
+        background: var(--Background, linear-gradient(180deg, rgba(229, 220, 220, 0.85) 0%, rgba(241, 220, 190, 0.86) 100%));
+        color: #000;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        box-shadow: 0px 4px 11px 1px rgba(0, 0, 0, 0.25);
+    }
+
     button:disabled {
         background-color: #cccccc;
         cursor: not-allowed;
@@ -92,6 +104,12 @@
         justify-content: space-around;
         align-items: center;
         margin-bottom: 15px;
+    }
+
+    .register-link {
+        color: #007bff;
+        text-decoration: none;
+        font-size: 1rem;
     }
 
 }

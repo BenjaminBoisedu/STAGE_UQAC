@@ -1,21 +1,19 @@
 import React from "react";
 import "./Logout.css";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Logout() {
   const navigate = useNavigate();
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
+  const { logout } = useAuth();
+  const handleLogout = async () => {
+    try {
+      await logout();
       navigate("/");
+    } catch (error) {
+      console.error("Erreur lors de la déconnexion :", error);
     }
-  }, [navigate]);
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
   };
-
   const handleCancel = () => {
     navigate("/profile");
   };

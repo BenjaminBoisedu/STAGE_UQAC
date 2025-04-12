@@ -11,14 +11,17 @@
         margin: 1rem;
     }
 
+    .logout-content>div {
+        margin-bottom: 1rem;
+    }
+
     .logout-title {
         color: #000;
         text-align: center;
-        font-family: Inter;
         font-size: 1.5rem;
         font-style: italic;
         font-weight: 500;
-        line-height: normal;
+
     }
 
     .logout-text {
@@ -41,24 +44,37 @@
 
     .cta button.cancel-button {
         background: var(--Background, linear-gradient(180deg, rgba(229, 220, 220, 0.85) 0%, rgba(241, 220, 190, 0.86) 100%));
-        color: #000;
-        font-family: Inter;
         font-size: 1rem;
         font-style: italic;
         font-weight: 300;
         line-height: normal;
         cursor: pointer;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 17px;
+    }
+
+    .cta button.cancel-button a {
+        color: #000;
+        text-decoration: none;
+        font-family: Inter;
     }
 
     .cta button.logout-button {
         background: linear-gradient(180deg, #F00 0%, #BD6D37 100%);
-        color: #000;
         font-family: Inter;
         font-size: 1rem;
         font-style: italic;
         font-weight: 300;
-        line-height: normal;
-        cursor: pointer;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 17px;
+    }
+
+    .cta button.logout-button a {
+        color: #FFF;
+        text-decoration: none;
+        font-family: Inter;
     }
 
 }
