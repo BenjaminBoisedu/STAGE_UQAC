@@ -52,7 +52,7 @@ export default function UserPublications() {
 
         // Récupérer les vidéos
         const videosQuery = query(
-          collection(db, "Videos"),
+          collection(db, "Vidéo"),
           where("auteurId", "==", userRef)
         );
 
