@@ -4,6 +4,7 @@ import { getCollection } from "../../services/FirebaseOperations";
 import { Link } from "react-router-dom";
 import "./Articles.css";
 
+
 export default function Articles() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);

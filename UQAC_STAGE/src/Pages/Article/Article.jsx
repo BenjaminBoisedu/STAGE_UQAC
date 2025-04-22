@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useArticleWithTags } from "../../hooks/useArticleWithTags";
 import "./Article.css";
+import LikeButton from "../../Components/UI/Button/LikeButton";
 
 export default function Article() {
   const { id } = useParams();
@@ -33,6 +34,7 @@ export default function Article() {
           <p>{article.description}</p>
           <p>Auteur: {article.auteur}</p>
           <p>Date: {formatDate(article.datePublication)}</p>
+          <p><LikeButton contenuId={id} /></p>
           <div className="tags">
             {tags.map((tag) => (
               <span key={tag.id} className="tag">
