@@ -4,7 +4,7 @@ import { MdAccountCircle } from "react-icons/md";
 
 export default function UserInfos({ userData }) {
   return (
-    <div className="user-infos">
+    <div className="user-info">
       {userData ? (
         <div>
           <div className="avatar">

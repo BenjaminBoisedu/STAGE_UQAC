@@ -38,6 +38,14 @@ const Category = lazy(() =>
   delay(1000).then(() => import("../Pages/Catégorie/Catégorie"))
 );
 
+const Videos = lazy(() =>
+  delay(1000).then(() => import("../Pages/Videos/Videos"))
+);
+
+const Video = lazy(() =>
+  delay(1000).then(() => import("../Pages/Video/Video"))
+);
+
 const AppRoutes = () => {
   return (
     <Suspense fallback={<LoadingSpinner />}>
@@ -50,7 +58,8 @@ const AppRoutes = () => {
         <Route path="/articles/:id" element={<Article />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/categories/:id" element={<Category />} />
-
+        <Route path="/videos" element={<Videos />} />
+        <Route path="/videos/:id" element={<Video />} />
         {/* Route publique */}
 
         {/* Route protégée */}

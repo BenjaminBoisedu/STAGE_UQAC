@@ -1,7 +1,12 @@
 @media screen and (max-width: 768px) {
     .dropdown {
-        position: relative;
+        position: absolute;
         display: inline-block;
+        margin: 0 auto;
+        text-align: center;
+        z-index: 1000;
+        top: 0;
+        right: 0;
     }
 
     .dropbtn {
@@ -75,7 +80,6 @@
     @media screen and (max-width: 768px) {
         .dropdown-menu {
             width: 100%;
-            left: 0;
         }
     }
 
