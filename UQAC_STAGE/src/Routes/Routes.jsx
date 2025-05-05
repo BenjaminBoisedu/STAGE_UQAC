@@ -45,6 +45,12 @@ const Videos = lazy(() =>
 const Video = lazy(() =>
   delay(1000).then(() => import("../Pages/Video/Video"))
 );
+const ConfirmDelete = lazy(() =>
+  delay(1000).then(() => import("../Pages/ConfirmDelete/ConfirmDelete"))
+);
+const Settings = lazy(() =>
+  delay(1000).then(() => import("../Pages/Settings/Settings"))
+);
 
 const AppRoutes = () => {
   return (
@@ -72,10 +78,26 @@ const AppRoutes = () => {
           }
         />
         <Route
+          path="/profile/settings"
+          element={
+            <PrivateRoute>
+              <Settings />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/logout"
           element={
             <PrivateRoute>
               <Logout />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/confirmationDeleteAccount"
+          element={
+            <PrivateRoute>
+              <ConfirmDelete />
             </PrivateRoute>
           }
         />

@@ -13,4 +13,8 @@
         justify-content: space-around;
     }
 
+    .avatar svg {
+        width: -webkit-fill-available;
+    }
+
 }

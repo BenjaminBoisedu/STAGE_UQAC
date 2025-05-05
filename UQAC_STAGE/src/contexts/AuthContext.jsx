@@ -6,8 +6,11 @@ import {
   GoogleAuthProvider,
   signOut,
   onAuthStateChanged,
+  deleteUser,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
 import { auth, db } from "../config/Firebase";
 
 // Création du contexte
@@ -204,6 +207,55 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Supprimer le compte utilisateur
+  const deleteAccount = async (password) => {
+    try {
+      setError("");
+
+      if (!currentUser) {
+        setError("Aucun utilisateur connecté");
+        throw new Error("Aucun utilisateur connecté");
+      }
+
+      // Réauthentifier l'utilisateur avant de supprimer le compte
+      // (nécessaire pour les opérations sensibles)
+      if (password) {
+        const credential = EmailAuthProvider.credential(
+          currentUser.email,
+          password
+        );
+        await reauthenticateWithCredential(currentUser, credential);
+      }
+
+      // Supprimer les données utilisateur dans Firestore
+      await deleteDoc(doc(db, "utilisateurs", currentUser.uid));
+
+      // Supprimer le compte dans Firebase Auth
+      await deleteUser(currentUser);
+
+      // Réinitialiser les états locaux
+      setCurrentUser(null);
+      setUserData(null);
+
+      return true;
+    } catch (error) {
+      console.error("Erreur de suppression du compte:", error);
+
+      switch (error.code) {
+        case "auth/requires-recent-login":
+          setError("Veuillez vous reconnecter pour effectuer cette opération");
+          break;
+        case "auth/wrong-password":
+          setError("Mot de passe incorrect");
+          break;
+        default:
+          setError("Erreur lors de la suppression du compte");
+      }
+
+      throw error;
+    }
+  };
+
   // Valeurs exposées par le contexte
   const value = {
     currentUser,
@@ -217,6 +269,7 @@ export function AuthProvider({ children }) {
     register,
     logout,
     fetchUserData,
+    deleteAccount, // Ajout de la nouvelle fonction
   };
 
   return (

@@ -62,9 +62,8 @@ export default function DropDownMenu() {
     ) {
       try {
         // Utiliser la fonction de suppression du contexte
-        deleteAccount();
+        navigate("/confirmationDeleteAccount");
         dropdownRef.current.classList.remove("show");
-        navigate("/");
       } catch (error) {
         console.error("Erreur lors de la suppression du compte:", error);
       }

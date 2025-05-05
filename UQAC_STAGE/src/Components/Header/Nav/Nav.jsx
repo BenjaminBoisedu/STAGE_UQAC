@@ -48,6 +48,14 @@ export default function Nav() {
             </Link>
           </li>
         )}
+        {!isAuthenticated && (
+          <li className="nav__item">
+            <Link to="/login">
+              <p>Connexion</p>
+              <MdAccountBox className="nav__icon" color="#5D5C5CAB" size={20} />
+            </Link>
+          </li>
+        )}
       </ul>
     </nav>
   );
