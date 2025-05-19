@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { db } from "../../config/Firebase";
-import { getDoc, doc, getDocFromCache } from "firebase/firestore";
+import { getDoc, doc, addDoc, collection, Timestamp } from "firebase/firestore";
+import { useAuth } from "../../contexts/AuthContext";
 import "./Video.css";
+
 export default function Video() {
   const { id } = useParams();
   const [video, setVideo] = useState(null);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     const fetchVideo = async () => {
@@ -23,7 +26,6 @@ export default function Video() {
 
         const data = videoSnap.data();
 
-        // Charger les noms des catégories (références)
         const categoryNames = await Promise.all(
           (data.catégories || []).map(async (ref) => {
             const snap = await getDoc(ref);
@@ -42,6 +44,23 @@ export default function Video() {
 
     fetchVideo();
   }, [id]);
+
+  useEffect(() => {
+    const logHistory = async () => {
+      if (!currentUser || !id) return;
+      try {
+        await addDoc(collection(db, "historique"), {
+          contenuId: doc(db, "Vidéo", id),
+          utilisateurId: currentUser.uid,
+          date: Timestamp.now(),
+        });
+      } catch (err) {
+        console.error("Erreur lors de l'enregistrement de la vue:", err);
+      }
+    };
+
+    logHistory();
+  }, [currentUser, id]);
 
   const isYouTubeLink = (url) =>
     url.includes("youtube.com") || url.includes("youtu.be");
@@ -62,14 +81,13 @@ export default function Video() {
 
       {isYouTubeLink(video.lien) ? (
         <div className="video-responsive">
-        <iframe
-          src={`https://www.youtube.com/embed/${extractYouTubeId(video.lien)}`}
-          title="YouTube video player"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
-      </div>
-      
+          <iframe
+            src={`https://www.youtube.com/embed/${extractYouTubeId(video.lien)}`}
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
       ) : (
         <a href={video.lien} target="_blank" rel="noopener noreferrer">
           Voir la vidéo
