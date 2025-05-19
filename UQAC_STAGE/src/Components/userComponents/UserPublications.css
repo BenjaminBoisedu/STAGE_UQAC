@@ -8,17 +8,17 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    max-height: 80vh;
+    max-height: 30vh;
     /* Hauteur maximale pour tous les écrans */
 }
 
 .publications-content {
     flex: 1;
     overflow-y: auto;
-    /* Défilement vertical pour le contenu */
+    max-height: 65vh; /* ✅ ou ajuste selon ton menu */
     padding-right: 5px;
-    /* Espace pour la scrollbar */
 }
+
 
 /* Personnalisation de la scrollbar pour Chrome/Safari/Edge */
 .publications-content::-webkit-scrollbar {

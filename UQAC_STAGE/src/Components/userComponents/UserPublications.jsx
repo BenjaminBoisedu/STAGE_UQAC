@@ -3,7 +3,14 @@ import "./UserPublications.css";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { db } from "../../config/Firebase";
-import { collection, query, where, getDocs, doc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  deleteDoc
+} from "firebase/firestore";
 
 export default function UserPublications() {
   const [publications, setPublications] = useState([]);
@@ -17,9 +24,6 @@ export default function UserPublications() {
 
   useEffect(() => {
     if (!isAuthenticated || !userId) {
-      console.log(
-        "[UserPublications] Utilisateur non authentifié ou ID manquant, arrêt du chargement"
-      );
       setLoading(false);
       return;
     }
@@ -29,28 +33,21 @@ export default function UserPublications() {
       setError(null);
 
       try {
-        // Créer une référence à l'utilisateur
         const userRef = doc(db, "utilisateurs", userId);
 
-        // Récupérer les articles (Publications)
         const articlesQuery = query(
           collection(db, "Publications"),
           where("auteurId", "==", userRef)
         );
-
-        // Récupérer les vidéos
         const videosQuery = query(
           collection(db, "Vidéo"),
           where("auteurId", "==", userRef)
         );
-
-        // Récupérer les applications
         const applicationsQuery = query(
           collection(db, "Applications"),
           where("auteurId", "==", userRef)
         );
 
-        // Exécuter les requêtes en parallèle
         const [articlesSnapshot, videosSnapshot, applicationsSnapshot] =
           await Promise.all([
             getDocs(articlesQuery),
@@ -58,31 +55,26 @@ export default function UserPublications() {
             getDocs(applicationsQuery),
           ]);
 
-        // Traiter les résultats
         const articlesList = articlesSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
           type: "article",
         }));
-
         const videosList = videosSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
           type: "video",
         }));
-
         const applicationsList = applicationsSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
           type: "application",
         }));
 
-        // Mettre à jour l'état
         setPublications(articlesList);
         setVideos(videosList);
         setApplications(applicationsList);
       } catch (err) {
-        console.error("[UserPublications] Erreur globale:", err);
         setError("Impossible de charger les publications");
       } finally {
         setLoading(false);
@@ -92,7 +84,31 @@ export default function UserPublications() {
     fetchUserContent();
   }, [userId, isAuthenticated]);
 
-  // Contenu actif en fonction de l'onglet sélectionné
+  const handleDelete = async (item) => {
+    const confirm = window.confirm("Voulez-vous vraiment supprimer cette publication ?");
+    if (!confirm) return;
+
+    const collectionName =
+      item.type === "video"
+        ? "Vidéo"
+        : item.type === "application"
+        ? "Applications"
+        : "Publications";
+
+    try {
+      await deleteDoc(doc(db, collectionName, item.id));
+      if (item.type === "article") {
+        setPublications((prev) => prev.filter((a) => a.id !== item.id));
+      } else if (item.type === "video") {
+        setVideos((prev) => prev.filter((v) => v.id !== item.id));
+      } else {
+        setApplications((prev) => prev.filter((a) => a.id !== item.id));
+      }
+    } catch (error) {
+      alert("Erreur lors de la suppression");
+    }
+  };
+
   const activeContent = () => {
     switch (activeTab) {
       case "articles":
@@ -106,7 +122,6 @@ export default function UserPublications() {
     }
   };
 
-  // Rendu du contenu
   const renderContent = () => {
     const content = activeContent();
 
@@ -116,43 +131,37 @@ export default function UserPublications() {
 
     return (
       <div className="content-grid">
-        {content.map((item) => {
-          return (
-            <div key={item.id} className="content-card">
-              {item.imageURL && (
-                <div className="content-image">
-                  <img src={item.imageURL} alt={item.titre || "Publication"} />
-                </div>
-              )}
-              <div className="content-details">
-                <h3>{item.titre || "Sans titre"}</h3>
-                <p className="content-description">
-                  {item.description || item.descritpion || "Pas de description"}
-                </p>
-                <Link to={`/${activeTab}/${item.id}`} className="view-button">
-                  Voir{" "}
-                  {activeTab === "articles"
-                    ? "l'article"
-                    : activeTab === "videos"
-                    ? "la vidéo"
-                    : "l'application"}
-                </Link>
-              </div>
+        {content.map((item) => (
+          <div key={item.id} className="content-card">
+            <div className="content-header">
+              <h3>{item.titre || "Sans titre"}</h3>
+              <button className="delete-button" onClick={() => handleDelete(item)} title="Supprimer">🗑️</button>
             </div>
-          );
-        })}
+            {item.imageURL && (
+              <div className="content-image">
+                <img src={item.imageURL} alt={item.titre || "Publication"} />
+              </div>
+            )}
+            <div className="content-details">
+              <p className="content-description">
+                {item.description || item.descritpion || "Pas de description"}
+              </p>
+              <Link to={`/${activeTab}/${item.id}`} className="view-button">
+                Voir {item.type === "article" ? "l'article" : item.type === "video" ? "la vidéo" : "l'application"}
+              </Link>
+            </div>
+          </div>
+        ))}
       </div>
     );
   };
 
   if (loading)
-    return (
-      <div className="loading-spinner">Chargement des publications...</div>
-    );
+    return <div className="loading-spinner">Chargement des publications...</div>;
   if (error) return <div className="error-message">{error}</div>;
 
   return (
-    <div className="user-publication">
+    <div className="user-publication" style={{ maxHeight: "80vh", overflowY: "auto" }}>
       <h2>Mes Publications</h2>
 
       <div className="publications-tabs">
@@ -169,9 +178,7 @@ export default function UserPublications() {
           Vidéos ({videos.length})
         </button>
         <button
-          className={`tab-button ${
-            activeTab === "applications" ? "active" : ""
-          }`}
+          className={`tab-button ${activeTab === "applications" ? "active" : ""}`}
           onClick={() => setActiveTab("applications")}
         >
           Applications ({applications.length})
