@@ -97,5 +97,31 @@
         color: #0066cc;
         font-weight: 500;
     }
+    .add-article-button {
+        display: inline-block;
+        margin-bottom: 1rem;
+        padding: 6px 12px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.9rem;
+      }
+      
+      .add-article-button:hover {
+        background-color: #0056b3;
+      }
+      .articles-container {
+        max-height: 80vh; /* limite la hauteur totale */
+        overflow-y: auto; /* permet le scroll si dépassement */
+        padding: 1rem 2rem;
+        box-sizing: border-box;
+      }
+      .articles-container::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+      }
+       
 
 }

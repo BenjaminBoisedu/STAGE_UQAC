@@ -90,6 +90,8 @@ export default function Articles() {
   return (
     <div className="articles-container">
       <h1>Articles</h1>
+      <Link to="/articles/ajouter" className="add-article-button">+ Ajouter un article</Link>
+
       {loading && <div className="loading">Chargement...</div>}
       {error && <div className="error">Erreur: {error}</div>}
       {isEmpty && <div className="empty">Aucun article trouvé.</div>}
