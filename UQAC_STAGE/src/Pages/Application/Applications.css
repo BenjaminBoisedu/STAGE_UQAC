@@ -1,0 +1,85 @@
+.applications-container {
+  padding: 1rem;
+}
+
+/* Filtres */
+.applications-filters {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.applications-filters button {
+  padding: 6px 14px;
+  border-radius: 20px;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.applications-filters button.active {
+  background-color: #333;
+  color: white;
+  border-color: #333;
+}
+
+/* Grille */
+.applications-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+/* Tuiles cliquables */
+.app-thumbnail {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  border-radius: 10px;
+  transition: transform 0.2s ease;
+}
+
+.app-thumbnail:hover {
+  transform: translateY(-2px);
+}
+
+.app-thumbnail img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+}
+
+/* Article sans image */
+.article-title-block {
+  padding: 1rem;
+  background-color: rgba(240, 240, 240, 0.6);
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* Miniature YouTube + icône de lecture */
+.app-thumbnail img[src*="img.youtube.com"] {
+  position: relative;
+}
+
+.app-thumbnail::after {
+  content: \"▶\";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  color: white;
+  text-shadow: 0 0 10px black;
+  pointer-events: none;
+}
