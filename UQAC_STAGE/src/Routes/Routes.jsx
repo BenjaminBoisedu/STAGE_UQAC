@@ -51,6 +51,18 @@ const ConfirmDelete = lazy(() =>
 const Settings = lazy(() =>
   delay(1000).then(() => import("../Pages/Settings/Settings"))
 );
+const Applications = lazy(() =>
+  delay(1000).then(() => import("../Pages/Application/Applications"))
+);
+const AjouterArticle = lazy(() =>
+  delay(1000).then(() => import("../Pages/Articles/ajouter/AjouterArticle"))
+);
+const AjouterVideo = lazy(() =>
+  delay(1000).then(() => import("../Pages/Videos/Ajouter/AjouterVideo"))
+);
+const Tags = lazy(() =>
+  delay(1000).then(() => import("../Pages/Tags/Tags"))
+);
 
 const AppRoutes = () => {
   return (
@@ -66,6 +78,18 @@ const AppRoutes = () => {
         <Route path="/categories/:id" element={<Category />} />
         <Route path="/videos" element={<Videos />} />
         <Route path="/videos/:id" element={<Video />} />
+        <Route path="/applications" element={<Applications />} />
+        <Route path="/articles/ajouter" element={<AjouterArticle />} />
+        <Route path="/videos/ajouter" element={<AjouterVideo />} />
+        <Route
+  path="/tags/ajouter"
+  element={
+    <PrivateRoute>
+      <Tags />
+    </PrivateRoute>
+  }
+/>
+
         {/* Route publique */}
 
         {/* Route protégée */}
