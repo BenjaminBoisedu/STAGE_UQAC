@@ -111,6 +111,10 @@ export default function Videos() {
   return (
     <div className="videos-container">
       <h1>Vidéos</h1>
+      <Link to="/videos/ajouter" className="add-video-button">
+  + Ajouter une vidéo
+</Link>
+
       <p>Liste des vidéos disponibles</p>
 
       {loading && <div className="loading">Chargement des vidéos...</div>}
