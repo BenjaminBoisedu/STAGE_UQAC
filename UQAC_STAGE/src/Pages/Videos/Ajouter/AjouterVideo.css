@@ -1,0 +1,74 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* évite le scroll global */
+  }
+  
+  .ajouter-video-scroll-zone {
+    grid-area: main;
+    overflow-y: auto;
+    height: 100%;
+    padding: 2rem 1rem 6rem;
+    background-color: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 0; /* reste sous le menu */
+    box-sizing: border-box;
+  }
+  
+  
+  
+  .ajouter-video-content h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    color: #222;
+  }
+  
+  .ajouter-video-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  
+  .ajouter-video-form label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333;
+  }
+  
+  .ajouter-video-form input,
+  .ajouter-video-form textarea,
+  .ajouter-video-form select {
+    padding: 0.6rem 0.8rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #000;
+    box-sizing: border-box;
+  }
+  
+  .ajouter-video-form textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .ajouter-video-form button {
+    background-color: #28a745;
+    color: white;
+    padding: 0.75rem;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .ajouter-video-form button:hover {
+    background-color: #218838;
+  }
+  
