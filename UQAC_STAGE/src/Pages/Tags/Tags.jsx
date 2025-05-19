@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs, addDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../config/Firebase";
-import "./Catégorie.css";
+import "./Tags.css";
 
-export default function AjouterCategorie() {
+export default function AjouterTag() {
   const [nom, setNom] = useState("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
-  const [categories, setCategories] = useState([]);
+  const [tags, setTags] = useState([]);
 
-  const fetchCategories = async () => {
+  const fetchTags = async () => {
     try {
-      const snapshot = await getDocs(collection(db, "catégories"));
+      const snapshot = await getDocs(collection(db, "tag"));
       const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setCategories(data);
+      setTags(data);
     } catch (err) {
-      console.error("Erreur lors du chargement des catégories:", err);
+      console.error("Erreur lors du chargement des tags:", err);
     }
   };
 
   useEffect(() => {
-    fetchCategories();
+    fetchTags();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -29,17 +29,17 @@ export default function AjouterCategorie() {
     setSuccess(false);
 
     if (!nom.trim()) {
-      setError("Le nom de la catégorie est requis.");
+      setError("Le nom du tag est requis.");
       return;
     }
 
     try {
-      await addDoc(collection(db, "catégories"), {
+      await addDoc(collection(db, "tag"), {
         nom: nom.trim(),
       });
       setSuccess(true);
       setNom("");
-      fetchCategories();
+      fetchTags();
     } catch (err) {
       console.error("Erreur d'ajout:", err);
       setError("Une erreur est survenue lors de l'ajout.");
@@ -47,9 +47,12 @@ export default function AjouterCategorie() {
   };
 
   const handleDelete = async (id) => {
+    const confirm = window.confirm("Voulez-vous vraiment supprimer ce tag ?");
+    if (!confirm) return;
+
     try {
-      await deleteDoc(doc(db, "catégories", id));
-      fetchCategories();
+      await deleteDoc(doc(db, "tag", id));
+      fetchTags();
     } catch (err) {
       console.error("Erreur suppression:", err);
       setError("Suppression impossible");
@@ -58,27 +61,27 @@ export default function AjouterCategorie() {
 
   return (
     <div className="ajouter-categorie-container">
-      <h2>Ajouter une Catégorie</h2>
+      <h2>Ajouter un Tag</h2>
       <form onSubmit={handleSubmit} className="ajouter-categorie-form">
         <input
           type="text"
           value={nom}
           onChange={(e) => setNom(e.target.value)}
-          placeholder="Nom de la catégorie"
+          placeholder="Nom du tag"
         />
         <button type="submit">Ajouter</button>
       </form>
 
-      {success && <p className="success-message">Catégorie ajoutée avec succès !</p>}
+      {success && <p className="success-message">Tag ajouté avec succès !</p>}
       {error && <p className="error-message">{error}</p>}
 
       <div className="liste-categories">
-        <h3>Catégories existantes :</h3>
+        <h3>Tags existants :</h3>
         <ul>
-          {categories.map((cat) => (
-            <li key={cat.id} className="categorie-item">
-              <span>{cat.nom}</span>
-              <button onClick={() => handleDelete(cat.id)} className="btn-delete">Supprimer</button>
+          {tags.map((tag) => (
+            <li key={tag.id} className="categorie-item">
+              <span>{tag.nom}</span>
+              <button onClick={() => handleDelete(tag.id)} className="btn-delete">Supprimer</button>
             </li>
           ))}
         </ul>
